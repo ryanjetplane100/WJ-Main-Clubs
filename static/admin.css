@@ -1,0 +1,151 @@
+html, body {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    background: #f5f7f8;
+    color: #243447;
+}
+
+.login-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 32px 16px;
+}
+
+.outlined-box {
+    width: min(100%, 430px);
+    padding: 32px;
+    border: 1px solid #dce3e8;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(36, 52, 71, .1);
+}
+
+.outlined-box h1 {
+    margin-bottom: 24px;
+    font-size: 2rem;
+}
+
+.outlined-box label {
+    display: block;
+    margin: 12px 0 6px;
+    text-align: left;
+}
+
+.outlined-box input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #c6d0d5;
+    border-radius: 5px;
+}
+
+.admin-nav-actions {
+    display: flex;
+    gap: 20px;
+}
+
+.admin-shell {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 56px 20px 72px;
+}
+
+.admin-heading {
+    margin-bottom: 32px;
+}
+
+.admin-heading h1 {
+    margin: 0;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+}
+
+.admin-heading p:last-child {
+    margin: 12px 0 0;
+    color: #617080;
+    font-family: Arial, sans-serif;
+}
+
+.admin-alerts {
+    margin-bottom: 24px;
+}
+
+.admin-card {
+    padding: 28px;
+    border: 1px solid #dce3e8;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(36, 52, 71, .06);
+}
+
+.admin-card-label {
+    margin: 0 0 8px;
+    color: #2f6f62;
+    font-family: Arial, sans-serif;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.admin-card h2 {
+    margin: 0 0 10px;
+    font-size: 1.45rem;
+}
+
+.admin-card p:not(.admin-card-label):not(.empty-state) {
+    color: #617080;
+    font-family: Arial, sans-serif;
+    font-size: .9rem;
+}
+
+.admin-card .form-control {
+    font-family: Arial, sans-serif;
+}
+
+.delete-form {
+    display: flex;
+    justify-content: flex-start;
+}
+
+@media (min-width: 992px) {
+    .delete-card-column {
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+.admin-primary {
+    background: #2f6f62;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+}
+
+.admin-primary:hover {
+    background: #24564d;
+    color: #ffffff;
+}
+
+.file-list {
+    max-height: 220px;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+    font-family: Arial, sans-serif;
+    font-size: .85rem;
+    text-align: center;
+}
+
+.file-list li {
+    padding: 9px 0;
+    border-bottom: 1px solid #edf0f1;
+}
+
+@media (max-width: 575px) {
+    .admin-nav-actions { gap: 12px; }
+    .admin-shell { padding-top: 40px; }
+}

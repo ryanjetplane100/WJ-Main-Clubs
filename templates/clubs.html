@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WJ Clubs</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='clubslist.css') }}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg site-nav">
+    <div class="container-fluid px-3 px-lg-4">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('clubslist') }}">
+        <img src="{{ url_for('static', filename='icons/main_logo.png') }}" alt="WJ Clubs" class="brand-logo">
+        <span>WJ Clubs</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item"><a class="nav-link active" href="{{ url_for('clubslist') }}">All Clubs</a></li>
+          <li class="nav-item"><a target="_blank" class="nav-link" href="https://www.montgomeryschoolsmd.org/schools/wjhs/">WJ Main Page</a></li>
+          <li class="nav-item"><a target="_blank" class="nav-link" href="https://www.montgomeryschoolsmd.org/schools/wjhs/students/">Start a Club</a></li>
+          <li class="nav-item"><a target="_blank" class="nav-link" href="https://www.montgomeryschoolsmd.org/schools/wjhs/staff/staff-directory/?processlevel=04424">Staff Email List</a></li>
+          <li class="nav-item"><a target="_blank" class="nav-link" href="https://wjboosterclub.org/">Booster Club</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('clubslist') }}">All Clubs</a></li>
+              {% for category in ['Interest', 'Competitive', 'Arts', 'Charity/Activism', 'Games/Sports', 'Dance', 'Culture', 'Music', 'Academic', 'STEM'] %}
+              <li><a class="dropdown-item" href="{{ url_for('clubslistCustom', user_query=category) }}">{{ category }}</a></li>
+              {% endfor %}
+            </ul>
+          </li>
+        </ul>
+        <a class="admin-link" href="{{ url_for('login') }}">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="directory-header">
+      <div class="container">
+        <div class="header-copy">
+          <p class="section-label">Walter Johnson High School</p>
+          <h1>Find your club.</h1>
+          <p class="intro">Browse student-led communities, activities, and interests across WJ.</p>
+        </div>
+        <form class="search-form" id="club-search" role="search">
+          <label class="visually-hidden" for="query">Search clubs</label>
+          <input id="query" class="form-control" type="search" placeholder="Search by club name or interest" autocomplete="off">
+          <label class="visually-hidden" for="category-filter">Sort by category</label>
+          <select class="form-select category-filter" id="category-filter" aria-label="Sort by category">
+            <option value="">All categories</option>
+            <option>Academic</option>
+            <option>Arts</option>
+            <option>Charity/Activism</option>
+            <option>Competitive</option>
+            <option>Culture</option>
+            <option>Dance</option>
+            <option>Games/Sports</option>
+            <option>Interest</option>
+            <option>Music</option>
+            <option>STEM</option>
+          </select>
+        </form>
+        <p class="result-count">Showing {{ total_clubs }} of {{ num_clubs }} clubs</p>
+      </div>
+    </section>
+
+    <section class="clubs-section">
+      <div class="container">
+        <div class="row g-4">
+          {% for club in clubs %}
+            {% if club['Sponsor Replied'] == 'True' and club['Added to Website'] == 'True' %}
+            <div class="col-lg-4 col-md-6 club-item" data-club-item data-search-text="{{ club['Club Name'] }} {{ club['Purpose'] }} {{ club['Social Media Handles (optional)'] }}" data-category="{{ club['Select the category for your club'] }}">
+              <article class="club-card h-100">
+                <div class="club-image-wrap">
+                  <img src="{{ url_for('static', filename=club['Image Path']) }}" alt="{{ club['Club Name'] }}" loading="lazy">
+                </div>
+                <div class="club-card-body">
+                  <h2>{{ club['Club Name'] }}</h2>
+                  <p class="club-purpose">{{ club['Purpose'] }}</p>
+                  <dl class="club-details">
+                    <div class="schedule-row"><dd>Meets {{ club['Select all the days of the week that your club meets'] }} {{ club['Club Meeting Frequency'] }} during {{ club['When does the club meet?'] }}</dd></div>
+                    <div><dt>Sponsor</dt><dd>{{ club['Sponsor email address'] }}</dd></div>
+                  </dl>
+                  {% if club['Social Media Handles (optional)'] %}
+                  <div class="social-link" data-social="{{ club['Social Media Handles (optional)'] }}">Social: {{ club['Social Media Handles (optional)'] }}</div>
+                  {% endif %}
+                </div>
+              </article>
+            </div>
+            {% endif %}
+          {% else %}
+            <div class="col-12"><p class="empty-state" id="empty-state" hidden>No clubs matched your search.</p></div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">All clubs and organizations are inclusive of all students regardless of sex or gender identity. Website created by Web Development Club and renewed by Hack Club.</div>
+  </footer>
+
+  <script>
+    const searchForm = document.getElementById('club-search');
+    const queryInput = document.getElementById('query');
+    const categoryFilter = document.getElementById('category-filter');
+    const clubItems = Array.from(document.querySelectorAll('[data-club-item]'));
+    const emptyState = document.getElementById('empty-state');
+    const resultCount = document.querySelector('.result-count');
+    function filterClubs() {
+      const query = queryInput.value.trim().toLowerCase();
+      const category = categoryFilter.value.toLowerCase();
+      let visible = 0;
+      clubItems.forEach((item) => {
+        const matchesQuery = !query || item.dataset.searchText.toLowerCase().includes(query);
+        const matchesCategory = !category || item.dataset.category.toLowerCase().includes(category);
+        item.hidden = !(matchesQuery && matchesCategory);
+        if (!item.hidden) visible += 1;
+      });
+      resultCount.textContent = `Showing ${visible} of ${clubItems.length} clubs`;
+      if (emptyState) emptyState.hidden = visible !== 0;
+    }
+    searchForm.addEventListener('submit', (event) => event.preventDefault());
+    queryInput.addEventListener('input', filterClubs);
+    categoryFilter.addEventListener('change', filterClubs);
+    document.querySelectorAll('[data-social]').forEach((social) => {
+      const sourceText = social.dataset.social;
+      const markdownLink = sourceText.match(/\[([^\]]+)\]\((https?:\/\/(?:www\.)?instagram\.com\/[^\s)]+)\)/i);
+      const text = sourceText.replace(/\s+instagram\s*$/i, '').replace(markdownLink ? markdownLink[0] : '', markdownLink ? markdownLink[1] : '');
+      const url = text.match(/https?:\/\/(?:www\.)?instagram\.com\/[^\s)]+/i);
+      const taggedHandle = text.match(/@([a-z0-9._]+)/i);
+      const namedHandle = text.match(/(?:instagram|ig)\s*:?\s*(?!\(?instagram\)?)([a-z0-9._]+)/i);
+      const parenthesizedHandle = text.match(/([a-z0-9._]+)\s*\(instagram\)/i);
+      let linkedText = null;
+      let linkedStart = -1;
+      let target = null;
+      if (markdownLink) {
+        linkedText = markdownLink[1];
+        linkedStart = 0;
+        target = markdownLink[2];
+      } else if (url) {
+        linkedText = url[0];
+        linkedStart = url.index;
+        target = linkedText;
+      } else if (taggedHandle) {
+        linkedText = taggedHandle[0];
+        linkedStart = taggedHandle.index;
+        target = `https://www.instagram.com/${taggedHandle[1]}`;
+      } else if (namedHandle) {
+        linkedText = namedHandle[1];
+        linkedStart = namedHandle.index + namedHandle[0].lastIndexOf(linkedText);
+        target = `https://www.instagram.com/${linkedText}`;
+      } else if (parenthesizedHandle) {
+        linkedText = parenthesizedHandle[1];
+        linkedStart = parenthesizedHandle.index;
+        target = `https://www.instagram.com/${linkedText}`;
+      }
+      social.textContent = 'Social: ';
+      if (linkedText) {
+        social.append(document.createTextNode(text.slice(0, linkedStart)));
+        const link = document.createElement('a');
+        link.href = target;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = linkedText;
+        social.append(link, document.createTextNode(text.slice(linkedStart + linkedText.length)));
+      } else {
+        social.append(document.createTextNode(text));
+      }
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

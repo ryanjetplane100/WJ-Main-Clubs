@@ -1,0 +1,76 @@
+:root {
+  --ink: #243447;
+  --muted: #617080;
+  --line: #dce3e8;
+  --paper: #f5f7f8;
+  --surface: #ffffff;
+  --accent: #2f6f62;
+  --accent-dark: #24564d;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.site-nav {
+  min-height: 70px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand-logo { width: 42px; height: 42px; object-fit: contain; }
+.navbar-brand { color: var(--ink); font-size: 1.15rem; font-weight: 700; }
+.nav-link { color: #4d5b67; font-family: Arial, sans-serif; font-size: .9rem; }
+.nav-link:hover, .nav-link.active { color: var(--accent); }
+.dropdown-menu { border: 1px solid var(--line); box-shadow: 0 8px 20px rgba(36, 52, 71, .1); }
+.dropdown-item { font-family: Arial, sans-serif; }
+.dropdown-item:active { background: var(--accent); }
+.admin-link { color: var(--accent); font-family: Arial, sans-serif; font-size: .9rem; text-decoration: none; }
+
+.directory-header { padding: 62px 0 28px; background: #edf2f0; border-bottom: 1px solid var(--line); }
+.header-copy { max-width: 700px; }
+.section-label { margin: 0 0 10px; color: var(--accent); font-family: Arial, sans-serif; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+h1 { margin: 0; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700; letter-spacing: -.03em; }
+.intro { margin: 12px 0 28px; color: var(--muted); font-family: Arial, sans-serif; font-size: 1rem; }
+.search-form { display: flex; max-width: 900px; gap: 10px; }
+.search-form .form-control { min-height: 48px; border: 1px solid #c6d0d5; border-radius: 5px; color: var(--ink); font-family: Arial, sans-serif; }
+.category-filter { min-width: 170px; border: 1px solid #c6d0d5; color: var(--ink); font-family: Arial, sans-serif; }
+.category-filter:focus { border-color: var(--accent); box-shadow: 0 0 0 .2rem rgba(47, 111, 98, .15); }
+.search-form .form-control:focus { border-color: var(--accent); box-shadow: 0 0 0 .2rem rgba(47, 111, 98, .15); }
+.search-button { min-width: 100px; border-radius: 5px; background: var(--accent); color: #fff; font-family: Arial, sans-serif; font-weight: 700; }
+.search-button:hover { background: var(--accent-dark); color: #fff; }
+.result-count { margin: 15px 0 0; color: var(--muted); font-family: Arial, sans-serif; font-size: .85rem; }
+
+.clubs-section { padding: 42px 0 70px; }
+.club-card { overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: 0 4px 14px rgba(36, 52, 71, .06); transition: transform .18s ease, box-shadow .18s ease; }
+.club-item[hidden] { display: none; }
+.club-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(36, 52, 71, .11); }
+.club-image-wrap { display: flex; align-items: center; justify-content: center; height: 220px; padding: 18px; background: #eef2f1; border-bottom: 1px solid var(--line); }
+.club-image-wrap img { width: 100%; height: 100%; object-fit: contain; }
+.club-card-body { padding: 22px; }
+.club-card h2 { margin: 0 0 10px; font-size: 1.4rem; line-height: 1.15; }
+.club-purpose { min-height: 50px; margin: 0 0 18px; color: var(--muted); font-family: Arial, sans-serif; font-size: .92rem; line-height: 1.5; }
+.club-details { margin: 0; font-family: Arial, sans-serif; font-size: .82rem; }
+.club-details div { display: grid; grid-template-columns: 58px 1fr; gap: 10px; padding: 8px 0; border-top: 1px solid #edf0f1; }
+.club-details .schedule-row dd { grid-column: 1 / -1; }
+.club-details dt { color: var(--accent); font-weight: 700; }
+.club-details dd { margin: 0; color: var(--muted); }
+.social-link { display: inline-block; margin-top: 14px; color: var(--muted); font-family: Arial, sans-serif; font-size: .82rem; font-weight: 400; text-decoration: none; }
+.social-link:hover { color: var(--accent-dark); text-decoration: underline; }
+.social-link a { color: var(--accent-dark); font-weight: 700; }
+.empty-state { padding: 60px 0; color: var(--muted); font-family: Arial, sans-serif; text-align: center; }
+.site-footer { padding: 24px 0; background: #243447; color: #dce3e8; font-family: Arial, sans-serif; font-size: .78rem; line-height: 1.5; text-align: center; }
+
+@media (max-width: 575px) {
+  .directory-header { padding-top: 42px; }
+  .search-form { flex-direction: column; }
+  .category-filter { width: 100%; }
+  .search-button { width: 100%; }
+  .club-image-wrap { height: 190px; }
+}
